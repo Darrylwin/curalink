@@ -21,3 +21,7 @@ spring:
 jwt:
   secret:
     key: z(#{?8qEs0R_kJ_2)OH@<G.1.m&W#^w9ehNf55p-/M<
+
+server:
+  servlet:
+    context-path: api/

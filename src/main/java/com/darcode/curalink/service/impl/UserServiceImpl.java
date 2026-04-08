@@ -1,5 +1,7 @@
 package com.darcode.curalink.service.impl;
 
+import com.darcode.curalink.dto.LoginRequestDto;
+import com.darcode.curalink.dto.LoginResponseDto;
 import com.darcode.curalink.dto.RegistrationRequestDto;
 import com.darcode.curalink.dto.RegistrationResponseDto;
 import com.darcode.curalink.model.User;
@@ -8,6 +10,8 @@ import com.darcode.curalink.service.JwtService;
 import com.darcode.curalink.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,5 +42,19 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         return new RegistrationResponseDto("Registration Successfull");
+    }
+
+    @Override
+    public LoginResponseDto userLogin(LoginRequestDto loginRequestDto) {
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                loginRequestDto.email(), loginRequestDto.password()
+        ));
+
+        User user = userRepository.findByEmail(loginRequestDto.email()).orElseThrow();
+        UserDetails userDetails = new UserDetailsImpl(user);
+
+        var jwtToken = jwtService.generateToken(userDetails);
+
+        return new LoginResponseDto(loginRequestDto.email(), jwtToken);
     }
 }
