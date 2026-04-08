@@ -20,8 +20,8 @@ spring:
 # Jwt configuration
 jwt:
   secret:
-    key: z(#{?8qEs0R_kJ_2)OH@<G.1.m&W#^w9ehNf55p-/M<
+    key: uWBtEyg+ABhPvngAqVHv+NUt8V8h2YW1sj8buY39lBY=
 
 server:
   servlet:
-    context-path: api/
+    context-path: /api
