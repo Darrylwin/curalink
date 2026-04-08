@@ -4,6 +4,7 @@ import com.darcode.curalink.dto.RegistrationRequestDto;
 import com.darcode.curalink.dto.RegistrationResponseDto;
 import com.darcode.curalink.model.User;
 import com.darcode.curalink.repository.UserRepository;
+import com.darcode.curalink.service.JwtService;
 import com.darcode.curalink.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;

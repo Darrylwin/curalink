@@ -17,7 +17,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
-  # Jwt configuration
-  jwt:
-    secret:
-      key: z(#{?8qEs0R_kJ_2)OH@<G.1.m&W#^w9ehNf55p-/M<
+# Jwt configuration
+jwt:
+  secret:
+    key: z(#{?8qEs0R_kJ_2)OH@<G.1.m&W#^w9ehNf55p-/M<
