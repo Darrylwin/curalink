@@ -1,4 +1,4 @@
-package com.darcode.curalink.user;
+package com.darcode.curalink.controller;
 
 import com.darcode.curalink.dto.ApiResponse;
 import com.darcode.curalink.dto.RegistrationRequestDto;
