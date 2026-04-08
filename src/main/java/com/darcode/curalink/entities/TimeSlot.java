@@ -23,4 +23,11 @@ public class TimeSlot {
 
     @Column(nullable = false)
     private Boolean isAvailable = false;
+
+    @ManyToOne
+    @JoinColumn(name = "doctor_id")
+    private User doctor;
+
+    @OneToOne(mappedBy = "timeSlot")
+    private Appointment appointment;
 }

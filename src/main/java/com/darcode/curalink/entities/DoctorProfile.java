@@ -24,4 +24,8 @@ public class DoctorProfile {
 
     @Column(nullable = false)
     private BigDecimal consultationFee;
+
+    @OneToOne
+    @JoinColumn(name = "doctor_id")
+    private User doctor;
 }

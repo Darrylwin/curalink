@@ -25,7 +25,18 @@ public class Appointment {
 
     private String reason;
 
+    @ManyToOne
+    @JoinColumn(name = "doctor_id")
     private User doctor;
 
+    @ManyToOne
+    @JoinColumn(name = "patient_id")
     private User patient;
+
+    @OneToOne
+    @JoinColumn(name = "time_slot_id")
+    private TimeSlot timeSlot;
+
+    @OneToOne(mappedBy = "appointment")
+    private MedicalRecord medicalRecord;
 }

@@ -22,4 +22,8 @@ public class MedicalRecord {
     private String prescription;
 
     private String notes;
+
+    @OneToOne
+    @JoinColumn("appointment_id")
+    private Appointment appointment;
 }
