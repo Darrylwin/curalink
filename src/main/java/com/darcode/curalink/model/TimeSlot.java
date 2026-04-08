@@ -1,4 +1,4 @@
-package com.darcode.curalink.entities;
+package com.darcode.curalink.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;

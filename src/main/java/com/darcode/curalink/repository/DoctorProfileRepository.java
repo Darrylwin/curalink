@@ -1,6 +1,6 @@
-package com.darcode.curalink.repositories;
+package com.darcode.curalink.repository;
 
-import com.darcode.curalink.entities.DoctorProfile;
+import com.darcode.curalink.model.DoctorProfile;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DoctorProfileRepository extends JpaRepository<DoctorProfile, Integer> {

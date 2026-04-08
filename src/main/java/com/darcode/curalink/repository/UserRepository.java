@@ -1,6 +1,6 @@
-package com.darcode.curalink.repositories;
+package com.darcode.curalink.repository;
 
-import com.darcode.curalink.entities.User;
+import com.darcode.curalink.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
