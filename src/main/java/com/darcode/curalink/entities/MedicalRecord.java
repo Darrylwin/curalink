@@ -24,6 +24,6 @@ public class MedicalRecord {
     private String notes;
 
     @OneToOne
-    @JoinColumn("appointment_id")
+    @JoinColumn(name = "appointment_id")
     private Appointment appointment;
 }
