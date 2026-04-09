@@ -1,6 +1,6 @@
 package com.darcode.curalink.controller;
 
-import com.darcode.curalink.dto.ErrorResponse;
+import com.darcode.curalink.dto.shared.ErrorResponse;
 import com.darcode.curalink.exception.ConflictException;
 import com.darcode.curalink.exception.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;

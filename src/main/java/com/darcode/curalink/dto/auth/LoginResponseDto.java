@@ -1,4 +1,4 @@
-package com.darcode.curalink.dto;
+package com.darcode.curalink.dto.auth;
 
 public record LoginResponseDto(
         String firstName,

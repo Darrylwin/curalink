@@ -1,4 +1,4 @@
-package com.darcode.curalink.dto;
+package com.darcode.curalink.dto.shared;
 
 import java.time.LocalDateTime;
 import java.util.Map;

@@ -1,6 +1,10 @@
 package com.darcode.curalink.controller;
 
-import com.darcode.curalink.dto.*;
+import com.darcode.curalink.dto.auth.LoginRequestDto;
+import com.darcode.curalink.dto.auth.LoginResponseDto;
+import com.darcode.curalink.dto.auth.RegistrationRequestDto;
+import com.darcode.curalink.dto.auth.RegistrationResponseDto;
+import com.darcode.curalink.dto.shared.ApiResponse;
 import com.darcode.curalink.service.AuthService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;

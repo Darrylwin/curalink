@@ -1,9 +1,9 @@
 package com.darcode.curalink.service.impl;
 
-import com.darcode.curalink.dto.LoginRequestDto;
-import com.darcode.curalink.dto.LoginResponseDto;
-import com.darcode.curalink.dto.RegistrationRequestDto;
-import com.darcode.curalink.dto.RegistrationResponseDto;
+import com.darcode.curalink.dto.auth.LoginRequestDto;
+import com.darcode.curalink.dto.auth.LoginResponseDto;
+import com.darcode.curalink.dto.auth.RegistrationRequestDto;
+import com.darcode.curalink.dto.auth.RegistrationResponseDto;
 import com.darcode.curalink.enums.Role;
 import com.darcode.curalink.exception.ConflictException;
 import com.darcode.curalink.model.User;
