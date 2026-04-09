@@ -1,8 +1,23 @@
 <configuration>
+    <!-- Configuration par défaut (pas de profil activé) -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <withJansi>true</withJansi>
+        <encoder>
+            <pattern>%d{HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+    <logger name="com.darcode" level="DEBUG"/>
+
+    <!-- Profil dev -->
     <springProfile name="dev">
         <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <withJansi>true</withJansi>
             <encoder>
-                <pattern>%d{HH:mm:ss} [%thread] %-5=level %logger{36} - %msg%n</pattern>
+                <pattern>%d{HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
             </encoder>
         </appender>
 
@@ -12,6 +27,7 @@
         <logger name="com.darcode" level="DEBUG"/>
     </springProfile>
 
+    <!-- Profil prod -->
     <springProfile name="prod">
         <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <file>logs/app.log</file>
@@ -20,7 +36,7 @@
                 <maxHistory>30</maxHistory>
             </rollingPolicy>
             <encoder>
-                <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread} %-5level %level{36}</pattern>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
             </encoder>
         </appender>
         <root level="WARN">
