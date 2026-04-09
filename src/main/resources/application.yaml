@@ -22,6 +22,10 @@ jwt:
   secret:
     key: uWBtEyg+ABhPvngAqVHv+NUt8V8h2YW1sj8buY39lBY=
 
+# Cors configuration
+cors:
+  allowed-origins: http://localhost:3000,http://localhost:3005
+
 # Swagger configuration
 springdoc:
   swagger-ui:
