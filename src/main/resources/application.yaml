@@ -22,6 +22,13 @@ jwt:
   secret:
     key: uWBtEyg+ABhPvngAqVHv+NUt8V8h2YW1sj8buY39lBY=
 
+# Swagger configuration
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
 server:
   servlet:
     context-path: /api
