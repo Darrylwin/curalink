@@ -1,9 +1,12 @@
 <configuration>
     <!-- Configuration par défaut (pas de profil activé) -->
+    <conversionRule class="org.springframework.boot.logging.logback.ColorConverter" conversionWord="clr" />
+
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <withJansi>true</withJansi>
         <encoder>
-            <pattern>%d{HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <pattern>%clr(%d{HH:mm:ss}){faint} %clr([%thread]){faint} %clr(%-5level){highlight} %clr(%logger{36}){cyan}
+                - %msg%n
+            </pattern>
         </encoder>
     </appender>
 
@@ -14,15 +17,16 @@
 
     <!-- Profil dev -->
     <springProfile name="dev">
-        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-            <withJansi>true</withJansi>
+        <appender name="CONSOLE_DEV" class="ch.qos.logback.core.ConsoleAppender">
             <encoder>
-                <pattern>%d{HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+                <pattern>%clr(%d{HH:mm:ss}){faint} %clr([%thread]){faint} %clr(%-5level){highlight}
+                    %clr(%logger{36}){cyan} - %msg%n
+                </pattern>
             </encoder>
         </appender>
 
         <root level="INFO">
-            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="CONSOLE_DEV"/>
         </root>
         <logger name="com.darcode" level="DEBUG"/>
     </springProfile>
