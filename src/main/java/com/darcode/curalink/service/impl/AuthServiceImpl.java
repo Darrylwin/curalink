@@ -9,7 +9,7 @@ import com.darcode.curalink.exception.ConflictException;
 import com.darcode.curalink.model.User;
 import com.darcode.curalink.repository.UserRepository;
 import com.darcode.curalink.service.JwtService;
-import com.darcode.curalink.service.UserService;
+import com.darcode.curalink.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
