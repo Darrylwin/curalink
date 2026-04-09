@@ -2,7 +2,7 @@ spring:
   jpa:
     properties:
       # Migrations generation config
-      javax:
+      jakarta:
         persistence:
           schema-generation:
             scripts:
