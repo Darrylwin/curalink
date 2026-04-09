@@ -1,7 +1,7 @@
 package com.darcode.curalink.controller;
 
 import com.darcode.curalink.dto.ErrorResponse;
-import com.darcode.curalink.exception.ResourceAlreadyExistsException;
+import com.darcode.curalink.exception.ConflictException;
 import com.darcode.curalink.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,8 +46,8 @@ public class GlobalExceptionHandler {
                 .body(ErrorResponse.of(400, "Invalid credentials"));
     }
 
-    @ExceptionHandler(ResourceAlreadyExistsException.class)
-    public ResponseEntity<ErrorResponse> handleResourceAlreadyExistsException(ResourceAlreadyExistsException exception) {
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<ErrorResponse> handleResourceAlreadyExistsException(ConflictException exception) {
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
                 .body(ErrorResponse.of(409, exception.getMessage()));

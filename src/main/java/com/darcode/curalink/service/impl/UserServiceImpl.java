@@ -4,7 +4,8 @@ import com.darcode.curalink.dto.LoginRequestDto;
 import com.darcode.curalink.dto.LoginResponseDto;
 import com.darcode.curalink.dto.RegistrationRequestDto;
 import com.darcode.curalink.dto.RegistrationResponseDto;
-import com.darcode.curalink.exception.ResourceAlreadyExistsException;
+import com.darcode.curalink.enums.Role;
+import com.darcode.curalink.exception.ConflictException;
 import com.darcode.curalink.model.User;
 import com.darcode.curalink.repository.UserRepository;
 import com.darcode.curalink.service.JwtService;
@@ -30,13 +31,14 @@ public class UserServiceImpl implements UserService {
         User userExist = userRepository.findByEmail(registrationRequestDto.email()).orElse(null);
 
         if (userExist != null) {
-            throw new ResourceAlreadyExistsException("User already exists");
+            throw new ConflictException("User already exists");
         }
 
         User user = new User();
         user.setFirstName(registrationRequestDto.firstName());
         user.setEmail(registrationRequestDto.email());
         user.setPassword(passwordEncoder.encode(registrationRequestDto.password()));
+        user.setRole(Role.PATIENT);
 
         userRepository.save(user);
 
