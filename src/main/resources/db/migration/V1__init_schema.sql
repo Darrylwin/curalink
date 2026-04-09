@@ -45,15 +45,9 @@ create table users
     password   varchar(255) not null,
     primary key (id)
 );
-alter table if exists appointments
-    add constraint FK6u6s6egu60m2cbdjno44jbipa foreign key (doctor_id) references users;
-alter table if exists appointments
-    add constraint FKopb2h9yhin1rb4dqote8bws6w foreign key (patient_id) references users;
-alter table if exists appointments
-    add constraint FKlt1cehvx9m01l4s0ibvx60xv1 foreign key (time_slot_id) references time_slots;
-alter table if exists doctors_profiles
-    add constraint FK7cvr0n5jy9gusp9syspbe5y6o foreign key (doctor_id) references users;
-alter table if exists medical_records
-    add constraint FKifeec8p5v06rt258odelw8s7j foreign key (appointment_id) references appointments;
-alter table if exists time_slots
-    add constraint FKultmvjxpd6kbw8o3hej2v992 foreign key (doctor_id) references users;
+alter table if exists appointments add constraint FK6u6s6egu60m2cbdjno44jbipa foreign key (doctor_id) references users;
+alter table if exists appointments add constraint FKopb2h9yhin1rb4dqote8bws6w foreign key (patient_id) references users;
+alter table if exists appointments add constraint FKlt1cehvx9m01l4s0ibvx60xv1 foreign key (time_slot_id) references time_slots;
+alter table if exists doctors_profiles add constraint FK7cvr0n5jy9gusp9syspbe5y6o foreign key (doctor_id) references users;
+alter table if exists medical_records add constraint FKifeec8p5v06rt258odelw8s7j foreign key (appointment_id) references appointments;
+alter table if exists time_slots add constraint FKultmvjxpd6kbw8o3hej2v992 foreign key (doctor_id) references users;
