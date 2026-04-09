@@ -34,8 +34,17 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+    public String generateAccessToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("type", "access");
+        return generateToken(claims, userDetails, 1000 * 60 * 20);
+    }
+
+    @Override
+    public String generateRefreshToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("type", "refresh");
+        return generateToken(claims, userDetails, 1000 * 60 * 60 * 24 * 7);
     }
 
     @Override
@@ -53,12 +62,12 @@ public class JwtServiceImpl implements JwtService {
                 .getBody();
     }
 
-    private String generateToken(Map<String, Object> extractClaims, UserDetails userDetails) {
+    private String generateToken(Map<String, Object> extractClaims, UserDetails userDetails, long durationMls) {
         return Jwts.builder()
                 .setClaims(extractClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 20))
+                .setExpiration(new Date(System.currentTimeMillis() + durationMls))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

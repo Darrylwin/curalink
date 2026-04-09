@@ -58,10 +58,11 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByEmail(loginRequestDto.email()).orElseThrow();
         UserDetails userDetails = new UserDetailsImpl(user);
 
-        var jwtToken = jwtService.generateToken(userDetails);
+        var accessToken = jwtService.generateAccessToken(userDetails);
+        var refrshToken = jwtService.generateRefreshToken(userDetails);
 
         log.info("Token generated");
         log.info(("Login successfull"));
-        return new LoginResponseDto(loginRequestDto.email(), jwtToken);
+        return new LoginResponseDto(user.getFirstName(), accessToken, refrshToken);
     }
 }

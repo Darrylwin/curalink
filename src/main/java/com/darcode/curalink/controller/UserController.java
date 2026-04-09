@@ -2,6 +2,8 @@ package com.darcode.curalink.controller;
 
 import com.darcode.curalink.dto.*;
 import com.darcode.curalink.service.UserService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,11 +30,17 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<LoginResponseDto>> login(@Valid @RequestBody LoginRequestDto loginRequestDto) {
-        LoginResponseDto response = userService.login(loginRequestDto);
+    public ResponseEntity<ApiResponse<LoginResponseDto>> login(
+            @Valid @RequestBody LoginRequestDto loginRequestDto,
+            HttpServletResponse response
+    ) {
+        LoginResponseDto loginResponseDto = userService.login(loginRequestDto);
+        Cookie cookie = new Cookie("refreshToken", loginResponseDto.refreshToken());
+        cookie.setHttpOnly(true);
+        response.addCookie(cookie);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(ApiResponse.success(response, "Login successfull"));
+                .body(ApiResponse.success(loginResponseDto, "Login successfull"));
     }
 }
