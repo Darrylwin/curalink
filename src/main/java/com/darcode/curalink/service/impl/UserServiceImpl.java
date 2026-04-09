@@ -11,12 +11,14 @@ import com.darcode.curalink.repository.UserRepository;
 import com.darcode.curalink.service.JwtService;
 import com.darcode.curalink.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -31,6 +33,7 @@ public class UserServiceImpl implements UserService {
         User userExist = userRepository.findByEmail(registrationRequestDto.email()).orElse(null);
 
         if (userExist != null) {
+            log.info("User {} already exists", registrationRequestDto.email());
             throw new ConflictException("User already exists");
         }
 
@@ -42,6 +45,7 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(user);
 
+        log.info("User {} created", registrationRequestDto.email());
         return new RegistrationResponseDto("Registration Successfull");
     }
 
@@ -56,6 +60,8 @@ public class UserServiceImpl implements UserService {
 
         var jwtToken = jwtService.generateToken(userDetails);
 
+        log.info("Token generated");
+        log.info(("Login successfull"));
         return new LoginResponseDto(loginRequestDto.email(), jwtToken);
     }
 }
