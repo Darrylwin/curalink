@@ -1,6 +1,46 @@
 spring:
+  application:
+    name: curalink
+
+  # Database setup
+  datasource:
+    url: jdbc:postgresql://localhost:5432/curalink
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
   jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    open-in-view: false
     properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
       # Migrations generation config
-      jakarta.persistence.schema-generation.scripts.action: create
-      jakarta.persistence.schema-generation.scripts.create-target: src/main/resources/db/changelog/changes/V1__init_schema.sql # generate V1 of the datbase
+#      jakarta.persistence.schema-generation.scripts.action: create
+#      jakarta.persistence.schema-generation.scripts.create-target: src/main/resources/db/changelog/changes/V1__init_schema.sql # This is for the V1 of the app
+
+  # Desable Liquibase in dev
+  liquibase:
+    enabled: false
+
+# Jwt configuration
+jwt:
+  secret:
+    key: uWBtEyg+ABhPvngAqVHv+NUt8V8h2YW1sj8buY39lBY=
+
+# Cors configuration
+cors:
+  allowed-origins: http://localhost:3000,http://localhost:3005
+
+# Swagger configuration - Desabled in dev to load app fastly
+springdoc:
+  swagger-ui:
+    enabled: false
+  api-docs:
+    enabled: false
+
+server:
+  servlet:
+    context-path: /api
