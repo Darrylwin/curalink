@@ -18,7 +18,7 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private LocalDateTime sheduledAt;
+    private LocalDateTime sheduledAt = LocalDateTime.now();
 
     @Column(nullable = false)
     private AppointmetStatus status = AppointmetStatus.PENDING;
