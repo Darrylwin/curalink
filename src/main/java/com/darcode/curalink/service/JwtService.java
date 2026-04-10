@@ -8,7 +8,7 @@ import java.util.function.Function;
 public interface JwtService {
 
     // Extract user firstName
-    String extractFirstName(String token);
+    String extractEmail(String token);
 
     // Extract a single claim
     <T> T extractClaim(String token, Function<Claims, T> claimResolver);
