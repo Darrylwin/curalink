@@ -53,6 +53,21 @@ public class JwtServiceImpl implements JwtService {
         return (userName.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
+    @Override
+    public String extractTokenType(String token) {
+        return extractClaim(token, claims -> (String) claims.get("type"));
+    }
+
+    @Override
+    public boolean isRefreshTokenValid(String token, UserDetails userDetails) {
+        final String email = extractEmail(token);
+        final String tokenType = extractTokenType(token);
+
+        return  (tokenType.equals("refresh")
+                && email.equals(userDetails.getUsername())
+                && !isTokenExpired(token));
+    }
+
     // --------- Utility methods --------------
     private Claims extractAllClaims(String token) {
         return Jwts.parserBuilder()

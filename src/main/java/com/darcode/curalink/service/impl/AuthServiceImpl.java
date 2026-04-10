@@ -1,9 +1,6 @@
 package com.darcode.curalink.service.impl;
 
-import com.darcode.curalink.dto.auth.LoginRequestDto;
-import com.darcode.curalink.dto.auth.LoginResponseDto;
-import com.darcode.curalink.dto.auth.RegistrationRequestDto;
-import com.darcode.curalink.dto.auth.RegistrationResponseDto;
+import com.darcode.curalink.dto.auth.*;
 import com.darcode.curalink.enums.Role;
 import com.darcode.curalink.exception.ConflictException;
 import com.darcode.curalink.model.User;
@@ -13,8 +10,10 @@ import com.darcode.curalink.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +26,7 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final UserDetailsService userDetailsService;
 
     @Override
     public RegistrationResponseDto register(RegistrationRequestDto registrationRequestDto) {
@@ -64,5 +64,33 @@ public class AuthServiceImpl implements AuthService {
         log.info("Token generated");
         log.info(("Login successfull"));
         return new LoginResponseDto(user.getFirstName(), accessToken, refrshToken);
+    }
+
+    @Override
+    public RefreshTokenResponseDto refresh(RefreshTokenRequestDto refreshTokenRequestDto) {
+        try {
+            // extract refresh token
+            String email = jwtService.extractEmail(refreshTokenRequestDto.refreshToken());
+
+            // load user details
+            UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+
+            // validate token
+            if(!jwtService.isRefreshTokenValid(refreshTokenRequestDto.refreshToken(), userDetails)) {
+                log.warn("Invalid refresh token for user {}", email);
+                throw new BadCredentialsException("Invalid or expired refresh token");
+            }
+
+            // generate a new access token
+            String newAccessToken = jwtService.generateAccessToken(userDetails);
+            // generate a new refresh token for rotation
+            String newRefreshToken = jwtService.generateRefreshToken(userDetails);
+
+            log.info("Token refreshed for user {}", email);
+            return new RefreshTokenResponseDto(newAccessToken, newRefreshToken);
+        } catch (Exception exception) {
+            log.error("Error refreshing token");
+            throw new BadCredentialsException("Invalid refresh token");
+        }
     }
 }
