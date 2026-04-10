@@ -74,13 +74,7 @@ public class DoctorServiceImpl implements DoctorService {
             definedTimeSlot.setDoctor(doctor);
 
             TimeSlot savedTimeSlot = timeSlotRepository.save(definedTimeSlot);
-            return new DefineTimeSlotResponse(
-                    savedTimeSlot.getDoctor().getId(),
-                    savedTimeSlot.getStartTime(),
-                    savedTimeSlot.getEndTime(),
-                    Duration.between(savedTimeSlot.getStartTime(), savedTimeSlot.getEndTime()),
-                    savedTimeSlot.getIsAvailable()
-            );
+            return doctorMapper.toDefinedTimeDlot(savedTimeSlot);
         } else {
             throw new ConflictException("This time slot is already registered for this doctor");
         }
