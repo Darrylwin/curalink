@@ -3,4 +3,4 @@ spring:
     properties:
       # Migrations generation config
       jakarta.persistence.schema-generation.scripts.action: create
-      jakarta.persistence.schema-generation.scripts.create-target: src/main/resources/db/migration/V1__init_schema.sql # generate V1 of the datbase
+      jakarta.persistence.schema-generation.scripts.create-target: src/main/resources/db/changelog/changes/V1__init_schema.sql # generate V1 of the datbase
