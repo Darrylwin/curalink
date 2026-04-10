@@ -1,5 +1,6 @@
 package com.darcode.curalink.mapper;
 
+import com.darcode.curalink.dto.doctors.DefineTimeSlotResponse;
 import com.darcode.curalink.dto.doctors.DoctorAvailableSlotResponse;
 import com.darcode.curalink.dto.doctors.DoctorResponse;
 import com.darcode.curalink.model.TimeSlot;
@@ -29,6 +30,19 @@ public class DoctorMapper {
                         timeSlot.getStartTime(),
                         timeSlot.getEndTime()
                 )
+        );
+    }
+
+    public DefineTimeSlotResponse toDefinedTimeDlot(TimeSlot timeSlot) {
+        return new DefineTimeSlotResponse(
+                timeSlot.getDoctor().getId(),
+                timeSlot.getStartTime(),
+                timeSlot.getEndTime(),
+                Duration.between(
+                        timeSlot.getStartTime(),
+                        timeSlot.getEndTime()
+                ),
+                timeSlot.getIsAvailable()
         );
     }
 }

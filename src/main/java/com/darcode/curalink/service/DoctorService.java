@@ -1,5 +1,7 @@
 package com.darcode.curalink.service;
 
+import com.darcode.curalink.dto.doctors.DefineTimeSlotRequest;
+import com.darcode.curalink.dto.doctors.DefineTimeSlotResponse;
 import com.darcode.curalink.dto.doctors.DoctorAvailableSlotResponse;
 import com.darcode.curalink.dto.doctors.DoctorResponse;
 
@@ -11,4 +13,6 @@ public interface DoctorService {
     DoctorResponse findById(Integer id);
 
     List<DoctorAvailableSlotResponse> getAvailableSlots(Integer id);
+
+    DefineTimeSlotResponse defineTimeSlot(DefineTimeSlotRequest defineTimeSlotRequest);
 }

@@ -1,5 +1,7 @@
 package com.darcode.curalink.dto.shared;
 
+import org.jspecify.annotations.Nullable;
+
 import java.time.LocalDateTime;
 
 public record ApiResponse<T>(
@@ -14,6 +16,15 @@ public record ApiResponse<T>(
                 true,
                 "Ok",
                 data,
+                LocalDateTime.now()
+        );
+    }
+
+    public static <T> ApiResponse<T> success(String message) {
+        return new ApiResponse<>(
+                true,
+                message,
+                null,
                 LocalDateTime.now()
         );
     }

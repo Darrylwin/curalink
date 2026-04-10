@@ -22,7 +22,7 @@ public class TimeSlot {
     private LocalDateTime endTime;
 
     @Column(nullable = false)
-    private Boolean isAvailable = false;
+    private Boolean isAvailable = true;
 
     @ManyToOne
     @JoinColumn(name = "doctor_id")
