@@ -1,5 +1,6 @@
 package com.darcode.curalink.mapper;
 
+import com.darcode.curalink.dto.appointment.ScheduleAppointmentRequest;
 import com.darcode.curalink.dto.appointment.ScheduleAppointmentResponse;
 import com.darcode.curalink.model.Appointment;
 import org.springframework.stereotype.Component;

@@ -13,4 +13,6 @@ public interface TimeSlotRepository extends JpaRepository<TimeSlot, Integer> {
     Page<TimeSlot> findAllByIsAvailableAndDoctorId(Boolean isAvailable, Integer doctorId, Pageable pageable);
 
     Optional<TimeSlot> findByDoctorIdAndStartTimeAndEndTime(Integer doctorId, LocalDateTime startTime, LocalDateTime endTime);
+
+    Optional<TimeSlot> findByIdAndDoctorId(Integer id, Integer doctorId);
 }
