@@ -10,14 +10,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
 import org.springframework.data.domain.Page;
-import org.springdoc.core.converters.models.Pageable;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/doctors")
@@ -53,9 +51,11 @@ public class DoctorController {
                 .body(ApiResponse.success(doctor));
     }
 
-    @GetMapping("/{id}/available-slots") // TODO: add pagination
-    public ResponseEntity<ApiResponse<List<DoctorAvailableSlotResponse>>> getDoctorAvailableSlots(@PathVariable Integer id) {
-        List<DoctorAvailableSlotResponse> slots = doctorService.getAvailableSlots(id);
+    @GetMapping("/{id}/available-slots")
+    public ResponseEntity<ApiResponse<Page<DoctorAvailableSlotResponse>>> getDoctorAvailableSlots(
+            @PathVariable Integer id, @PageableDefault Pageable pageable
+    ) {
+        Page<DoctorAvailableSlotResponse> slots = doctorService.getAvailableSlots(id, pageable);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

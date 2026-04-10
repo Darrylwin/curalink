@@ -2,7 +2,7 @@ package com.darcode.curalink.repository;
 
 import com.darcode.curalink.enums.Role;
 import com.darcode.curalink.model.User;
-import org.springdoc.core.converters.models.Pageable;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
