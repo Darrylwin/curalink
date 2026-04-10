@@ -83,11 +83,9 @@ public class AuthServiceImpl implements AuthService {
 
             // generate a new access token
             String newAccessToken = jwtService.generateAccessToken(userDetails);
-            // generate a new refresh token for rotation
-            String newRefreshToken = jwtService.generateRefreshToken(userDetails);
 
             log.info("Token refreshed for user {}", email);
-            return new RefreshTokenResponseDto(newAccessToken, newRefreshToken);
+            return new RefreshTokenResponseDto(newAccessToken, refreshTokenRequestDto.refreshToken());
         } catch (Exception exception) {
             log.error("Error refreshing token");
             throw new BadCredentialsException("Invalid refresh token");
