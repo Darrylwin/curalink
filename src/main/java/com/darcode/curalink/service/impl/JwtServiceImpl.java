@@ -37,14 +37,14 @@ public class JwtServiceImpl implements JwtService {
     public String generateAccessToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("type", "access");
-        return generateToken(claims, userDetails, 1000 * 60 * 20);
+        return generateToken(claims, userDetails, 1000 * 60 * 60 * 24); // 24 heures
     }
 
     @Override
     public String generateRefreshToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("type", "refresh");
-        return generateToken(claims, userDetails, 1000 * 60 * 60 * 24 * 7);
+        return generateToken(claims, userDetails, 1000 * 60 * 60 * 24 * 7); // 7 jours
     }
 
     @Override

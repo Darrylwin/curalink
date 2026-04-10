@@ -1,9 +1,6 @@
 package com.darcode.curalink.controller;
 
-import com.darcode.curalink.dto.auth.LoginRequestDto;
-import com.darcode.curalink.dto.auth.LoginResponseDto;
-import com.darcode.curalink.dto.auth.RegistrationRequestDto;
-import com.darcode.curalink.dto.auth.RegistrationResponseDto;
+import com.darcode.curalink.dto.auth.*;
 import com.darcode.curalink.dto.shared.ApiResponse;
 import com.darcode.curalink.service.AuthService;
 import jakarta.servlet.http.Cookie;
@@ -34,12 +31,12 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    // TODO: update the login to use email instead of the BS UsernamePassword authentication provided by Spring security
     public ResponseEntity<ApiResponse<LoginResponseDto>> login(
             @Valid @RequestBody LoginRequestDto loginRequestDto,
             HttpServletResponse response
     ) {
         LoginResponseDto loginResponseDto = userService.login(loginRequestDto);
+
         Cookie cookie = new Cookie("refreshToken", loginResponseDto.refreshToken());
         cookie.setHttpOnly(true);
         response.addCookie(cookie);
@@ -49,5 +46,19 @@ public class AuthController {
                 .body(ApiResponse.success(loginResponseDto, "Login successfull"));
     }
 
-    // TODO: create refresh token endpoint
+    @PostMapping("/refresh")
+    public ResponseEntity<ApiResponse<RefreshTokenResponseDto>> refresh(
+            @Valid @RequestBody RefreshTokenRequestDto refreshTokenRequestDto,
+            HttpServletResponse response
+    ) {
+        RefreshTokenResponseDto responseDto = userService.refresh(refreshTokenRequestDto);
+
+        Cookie cookie = new Cookie("refrehToken", responseDto.refreshToken());
+        cookie.setHttpOnly(true);
+        response.addCookie(cookie);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse.success(responseDto, "Token successfully refreshed"));
+    }
 }
