@@ -1,5 +1,6 @@
 package com.darcode.curalink.controller;
 
+import com.darcode.curalink.dto.doctors.DoctorAvailableSlotResponse;
 import com.darcode.curalink.dto.doctors.DoctorResponse;
 import com.darcode.curalink.dto.shared.ApiResponse;
 import com.darcode.curalink.service.DoctorService;
@@ -38,5 +39,14 @@ public class DoctorController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ApiResponse.success(doctor));
+    }
+
+    @GetMapping("/{id}/available-slots")
+    public ResponseEntity<ApiResponse<List<DoctorAvailableSlotResponse>>> getDoctorAvailableSlots(@PathVariable Integer id) {
+        List<DoctorAvailableSlotResponse> slots = doctorService.getAvailableSlots(id);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse.success(slots));
     }
 }

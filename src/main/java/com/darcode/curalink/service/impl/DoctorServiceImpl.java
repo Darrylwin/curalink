@@ -1,10 +1,13 @@
 package com.darcode.curalink.service.impl;
 
+import com.darcode.curalink.dto.doctors.DoctorAvailableSlotResponse;
 import com.darcode.curalink.dto.doctors.DoctorResponse;
 import com.darcode.curalink.enums.Role;
 import com.darcode.curalink.exception.ResourceNotFoundException;
 import com.darcode.curalink.mapper.DoctorMapper;
+import com.darcode.curalink.model.TimeSlot;
 import com.darcode.curalink.model.User;
+import com.darcode.curalink.repository.TimeSlotRepository;
 import com.darcode.curalink.repository.UserRepository;
 import com.darcode.curalink.service.DoctorService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +20,7 @@ import java.util.List;
 public class DoctorServiceImpl implements DoctorService {
 
     private final UserRepository userRepository;
+    private final TimeSlotRepository timeSlotRepository;
     private final DoctorMapper doctorMapper;
 
     @Override
@@ -24,7 +28,7 @@ public class DoctorServiceImpl implements DoctorService {
         List<User> doctors = userRepository.findAllByRole(Role.DOCTOR);
 
         return doctors.stream()
-                .map(doctorMapper::toResponse)
+                .map(doctorMapper::toDoctorResponse)
                 .toList();
     }
 
@@ -32,6 +36,17 @@ public class DoctorServiceImpl implements DoctorService {
     public DoctorResponse findById(Integer id) {
         User doctor = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Doctor", id));
 
-        return doctorMapper.toResponse(doctor);
+        return doctorMapper.toDoctorResponse(doctor);
+    }
+
+    @Override
+    public List<DoctorAvailableSlotResponse> getAvailableSlots(Integer id) {
+        User doctor = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Doctor", id));
+
+        List<TimeSlot> timeSlots = timeSlotRepository.findAllByDoctorId(id);
+
+        return timeSlots.stream()
+                .map(doctorMapper::toAvailableSlotResponse)
+                .toList();
     }
 }
