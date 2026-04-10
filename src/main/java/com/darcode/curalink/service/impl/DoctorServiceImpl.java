@@ -14,9 +14,10 @@ import com.darcode.curalink.repository.TimeSlotRepository;
 import com.darcode.curalink.repository.UserRepository;
 import com.darcode.curalink.service.DoctorService;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.converters.models.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
 import java.util.List;
 
 @Service
@@ -28,12 +29,18 @@ public class DoctorServiceImpl implements DoctorService {
     private final DoctorMapper doctorMapper;
 
     @Override
-    public List<DoctorResponse> findAll() {
-        List<User> doctors = userRepository.findAllByRole(Role.DOCTOR);
+    public Page<DoctorResponse> findAllBySpecialityAndDisponibility(
+            String speciality,
+            Boolean disponiility,
+            Pageable pageable
+    ) {
+        Page<User> doctors = userRepository.findAllDoctorsBySpecialityAndDisponibility(
+                speciality,
+                disponiility,
+                pageable
+        );
 
-        return doctors.stream()
-                .map(doctorMapper::toDoctorResponse)
-                .toList();
+        return doctors.map(doctorMapper::toDoctorResponse);
     }
 
     @Override
@@ -45,7 +52,7 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public List<DoctorAvailableSlotResponse> getAvailableSlots(Integer id) {
-        User doctor = userRepository.findByRoleAndId(Role.DOCTOR, id).orElseThrow(() -> new ResourceNotFoundException("Doctor", id));
+        userRepository.findByRoleAndId(Role.DOCTOR, id).orElseThrow(() -> new ResourceNotFoundException("Doctor", id));
 
         List<TimeSlot> timeSlots = timeSlotRepository.findAllByIsAvailableAndDoctorId(true, id);
 

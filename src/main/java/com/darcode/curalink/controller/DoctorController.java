@@ -8,6 +8,10 @@ import com.darcode.curalink.dto.shared.ApiResponse;
 import com.darcode.curalink.service.DoctorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.Nullable;
+import org.springframework.data.domain.Page;
+import org.springdoc.core.converters.models.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,15 +28,23 @@ public class DoctorController {
     private final DoctorService doctorService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<DoctorResponse>>> getAllDoctors() {
-        List<DoctorResponse> doctors = doctorService.findAll();
+    public ResponseEntity<ApiResponse<Page<DoctorResponse>>> getAllDoctors(
+            @RequestParam @Nullable String speciality,
+            @RequestParam @Nullable Boolean disponibility,
+            @PageableDefault(size = 10, page = 10) Pageable pageable
+    ) {
+        Page<DoctorResponse> doctors = doctorService.findAllBySpecialityAndDisponibility(
+                speciality,
+                disponibility,
+                pageable
+        );
 
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ApiResponse.success(doctors));
     }
 
-    @GetMapping("/{id}") // TODO: add pagination and filters on speciality and disponibility
+    @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<DoctorResponse>> getDoctorById(@PathVariable Integer id) {
         DoctorResponse doctor = doctorService.findById(id);
 

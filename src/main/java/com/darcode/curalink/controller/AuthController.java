@@ -34,6 +34,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
+    // TODO: update the login to use email instead of the BS UsernamePassword authentication provided by Spring security
     public ResponseEntity<ApiResponse<LoginResponseDto>> login(
             @Valid @RequestBody LoginRequestDto loginRequestDto,
             HttpServletResponse response
@@ -47,4 +48,6 @@ public class AuthController {
                 .status(HttpStatus.OK)
                 .body(ApiResponse.success(loginResponseDto, "Login successfull"));
     }
+
+    // TODO: create refresh token endpoint
 }
