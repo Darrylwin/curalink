@@ -1,7 +1,7 @@
 package com.darcode.curalink.exception;
 
 public class ResourceNotFoundException extends RuntimeException {
-    public ResourceNotFoundException(String resource, Long id) {
+    public ResourceNotFoundException(String resource, Integer id) {
         super(resource + " with id " + id + " not found");
     }
 }

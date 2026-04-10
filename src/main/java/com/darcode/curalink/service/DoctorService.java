@@ -5,5 +5,7 @@ import com.darcode.curalink.dto.doctors.DoctorResponse;
 import java.util.List;
 
 public interface DoctorService {
-    public List<DoctorResponse> findAll();
+    List<DoctorResponse> findAll();
+
+    DoctorResponse findById(Integer id);
 }
