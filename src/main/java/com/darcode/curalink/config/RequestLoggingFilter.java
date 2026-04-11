@@ -27,7 +27,7 @@ public class RequestLoggingFilter extends OncePerRequestFilter {
 
         long duration = System.currentTimeMillis();
 
-        log.info("[{}] {} {} - {} ({}ms)",
+        log.info("[{}] {} {} - ({}ms)",
                 getClientIp(request),
                 request.getRequestURI(),
                 response.getStatus(),
