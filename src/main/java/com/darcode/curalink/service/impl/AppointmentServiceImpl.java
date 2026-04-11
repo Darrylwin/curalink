@@ -19,12 +19,14 @@ import com.darcode.curalink.repository.UserRepository;
 import com.darcode.curalink.service.AppointmentService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AppointmentServiceImpl implements AppointmentService {
@@ -66,8 +68,10 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public Page<AppointmentResponse> findUserAppointments(String userEmail, Pageable pageable) {
+        log.debug("Searching appointments for user {}", userEmail);
         Page<Appointment> appointments = appointmentRepository.findAllByUserAsDoctorOrPatient(userEmail, pageable);
 
+        log.debug("Found {} appointments", appointments.getTotalElements());
         return appointments.map(appointmentMapper::toAppointmentResponse);
     }
 
