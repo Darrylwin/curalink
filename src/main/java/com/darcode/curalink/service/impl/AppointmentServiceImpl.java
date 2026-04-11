@@ -38,20 +38,26 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public ScheduleAppointmentResponse schedule(ScheduleAppointmentRequest scheduleAppointmentRequest) {
+
+        log.debug("Schedu Appointment Request: {}", scheduleAppointmentRequest);
+
         User doctor = userRepository.findByRoleAndId(Role.DOCTOR, scheduleAppointmentRequest.doctorId())
                 .orElseThrow(() -> new ResourceNotFoundException("Doctor", scheduleAppointmentRequest.doctorId()));
-        User patient = userRepository.findByRoleAndId(Role.PATIENT, scheduleAppointmentRequest.doctorId())
+        log.debug("Schedule an appointement for doctor: {}", doctor.getEmail());
+        User patient = userRepository.findByRoleAndId(Role.PATIENT, scheduleAppointmentRequest.patientId())
                 .orElseThrow(() -> new ResourceNotFoundException("Patient", scheduleAppointmentRequest.patientId()));
+        log.debug("Schedule an appointement for patient: {}", patient.getEmail());
         TimeSlot timeSlot = timeSlotRepository.findByIdAndDoctorId(
                 scheduleAppointmentRequest.timeSlotId(),
                 scheduleAppointmentRequest.doctorId()
         ).orElseThrow(() -> new ResourceNotFoundException(
                 "TimeSlot with id " + scheduleAppointmentRequest.timeSlotId() + " not found for doctor " + scheduleAppointmentRequest.doctorId()
         ));
+        log.debug("Schedule an appointement with time slot: {} - {}", timeSlot.getStartTime(), timeSlot.getEndTime());
 
         if (timeSlot.getIsAvailable()) {
             Appointment appointment = new Appointment();
-            appointment.setReason(appointment.getReason());
+            appointment.setReason(scheduleAppointmentRequest.reason());
             appointment.setDoctor(doctor);
             appointment.setSheduledAt(LocalDateTime.now());
             appointment.setStatus(AppointmetStatus.PENDING);

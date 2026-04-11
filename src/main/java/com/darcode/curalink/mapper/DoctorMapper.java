@@ -24,6 +24,7 @@ public class DoctorMapper {
 
     public DoctorAvailableSlotResponse toAvailableSlotResponse(TimeSlot timeSlot) {
         return new DoctorAvailableSlotResponse(
+                timeSlot.getId(),
                 timeSlot.getStartTime(),
                 timeSlot.getEndTime(),
                 Duration.between(

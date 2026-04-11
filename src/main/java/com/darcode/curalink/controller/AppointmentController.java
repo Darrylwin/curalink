@@ -27,7 +27,9 @@ public class AppointmentController {
     private final AppointmentService appointmentService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<ScheduleAppointmentResponse>> scheduleAnAppointment(ScheduleAppointmentRequest scheduleRequest) {
+    public ResponseEntity<ApiResponse<ScheduleAppointmentResponse>> scheduleAnAppointment(
+            @Valid @RequestBody ScheduleAppointmentRequest scheduleRequest
+    ) {
         ScheduleAppointmentResponse response = appointmentService.schedule(scheduleRequest);
 
         return ResponseEntity
