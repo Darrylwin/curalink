@@ -82,12 +82,20 @@ public class AppointmentServiceImpl implements AppointmentService {
                 () -> new ResourceNotFoundException("Appointment", appointmentId)
         );
 
-        TimeSlot timeSlot = timeSlotRepository.findByAppointmentId(appointmentId);
-        timeSlot.setIsAvailable(true);
-        timeSlotRepository.save(timeSlot);
+        if (appointment.getStatus() == AppointmetStatus.CANCELED ||
+                appointment.getStatus() == AppointmetStatus.COMPLETED)
+            throw new ConflictException("Cannot cancel an appointment that is already " + appointment.getStatus());
+
+        TimeSlot timeSlot = appointment.getTimeSlot();
+        if (timeSlot != null) {
+            timeSlot.setIsAvailable(true);
+            timeSlotRepository.save(timeSlot);
+        }
 
         appointment.setStatus(AppointmetStatus.CANCELED);
         appointmentRepository.save(appointment);
+
+        log.info("Appointment {} cancelled successfully", appointmentId);
     }
 
     @Override
@@ -95,6 +103,10 @@ public class AppointmentServiceImpl implements AppointmentService {
         Appointment appointment = appointmentRepository.findById(appointmentId).orElseThrow(
                 () -> new ResourceNotFoundException("Appointment", appointmentId)
         );
+
+        if (appointment.getStatus() != AppointmetStatus.CONFIRMED) {
+            throw new ConflictException("Only cofirmed appointments can be completed");
+        }
 
         MedicalRecord medicalRecord = new MedicalRecord();
         medicalRecord.setDiagnosis(completeRequest.diagnosis());
@@ -106,6 +118,8 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointment.setStatus(AppointmetStatus.COMPLETED);
 
         appointmentRepository.save(appointment);
+
+        log.info("Appointment {} completed successfully", appointmentId);
     }
 
     @Override
