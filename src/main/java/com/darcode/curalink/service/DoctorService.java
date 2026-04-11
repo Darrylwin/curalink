@@ -13,7 +13,7 @@ public interface DoctorService {
 
     Page<DoctorResponse> findAllBySpecialityAndDisponibility(
             String speciality,
-            Boolean disponiility,
+            Boolean disponibility,
             Pageable pageable
     );
 

@@ -29,12 +29,12 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public Page<DoctorResponse> findAllBySpecialityAndDisponibility(
             String speciality,
-            Boolean disponiility,
+            Boolean disponibility,
             Pageable pageable
     ) {
         Page<User> doctors = userRepository.findAllDoctorsBySpecialityAndDisponibility(
                 speciality,
-                disponiility,
+                disponibility,
                 pageable
         );
 

@@ -19,11 +19,13 @@ public interface UserRepository extends JpaRepository<User, Integer> {
         LEFT JOIN u.doctorProfile dp
         WHERE u.role = com.darcode.curalink.enums.Role.DOCTOR
         AND (:speciality IS NULL OR dp.speciality = :speciality)
-        AND (:disponibility IS NULL OR (ts.isAvailable = true AND ts.startTime >= CURRENT_TIMESTAMP ))
-    """)
+        AND (:disponibility IS NULL\s
+        OR (:disponibility = true AND ts.isAvailable = true AND ts.startTime >= CURRENT_TIMESTAMP)
+        OR (:disponibility = false AND (ts.isAvailable = false OR ts.startTime < CURRENT_TIMESTAMP)))
+           \s""")
     Page<User> findAllDoctorsBySpecialityAndDisponibility(
             @Param("speciality") String speciality,
-            @Param("disponibility") Boolean disponiility,
+            @Param("disponibility") Boolean disponibility,
             Pageable pageable
     );
 
