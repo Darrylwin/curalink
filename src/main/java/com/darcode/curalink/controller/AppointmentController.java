@@ -13,10 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/appointments")
@@ -42,10 +39,19 @@ public class AppointmentController {
         String userEmail = authentication.getName();
 
         Page<AppointmentResponse> appointments =
-                appointmentService.getUserAppointment(userEmail, pageable);
+                appointmentService.findUserAppointments(userEmail, pageable);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ApiResponse.success(appointments,"Appointments successfully retrieved"));
+    }
+
+    @PatchMapping("/{id}/cancel")
+    public ResponseEntity<ApiResponse<String>> cancelAppointment(@PathVariable Integer id) {
+        appointmentService.cancelAppointment(id);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse.success("Appointment successfully canceled"));
     }
 }

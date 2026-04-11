@@ -21,6 +21,7 @@ public class Appointment {
     private LocalDateTime sheduledAt = LocalDateTime.now();
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private AppointmetStatus status = AppointmetStatus.PENDING;
 
     private String reason;

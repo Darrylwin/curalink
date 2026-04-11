@@ -15,4 +15,6 @@ public interface TimeSlotRepository extends JpaRepository<TimeSlot, Integer> {
     Optional<TimeSlot> findByDoctorIdAndStartTimeAndEndTime(Integer doctorId, LocalDateTime startTime, LocalDateTime endTime);
 
     Optional<TimeSlot> findByIdAndDoctorId(Integer id, Integer doctorId);
+
+    TimeSlot findByAppointmentId(Integer appointmentId);
 }

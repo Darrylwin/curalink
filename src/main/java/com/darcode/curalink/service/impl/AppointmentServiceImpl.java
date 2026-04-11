@@ -15,12 +15,14 @@ import com.darcode.curalink.repository.AppointmentRepository;
 import com.darcode.curalink.repository.TimeSlotRepository;
 import com.darcode.curalink.repository.UserRepository;
 import com.darcode.curalink.service.AppointmentService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -62,9 +64,24 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public Page<AppointmentResponse> getUserAppointment(String userEmail, Pageable pageable) {
+    public Page<AppointmentResponse> findUserAppointments (String userEmail, Pageable pageable) {
         Page<Appointment> appointments = appointmentRepository.findAllByPatientEmailOrDoctorEmail(userEmail, userEmail, pageable);
 
         return appointments.map(appointmentMapper::toAppointmentResponse);
+    }
+
+    @Override
+    @Transactional
+    public void cancelAppointment(Integer appointmentId) {
+        Appointment appointment = appointmentRepository.findById(appointmentId).orElseThrow(
+                () -> new ResourceNotFoundException("Appointment", appointmentId)
+        );
+
+        TimeSlot timeSlot = timeSlotRepository.findByAppointmentId(appointmentId);
+        timeSlot.setIsAvailable(true);
+        timeSlotRepository.save(timeSlot);
+
+        appointment.setStatus(AppointmetStatus.CANCELED);
+        appointmentRepository.save(appointment);
     }
 }
