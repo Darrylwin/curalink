@@ -59,13 +59,13 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public DefineTimeSlotResponse defineTimeSlot(DefineTimeSlotRequest request) {
-        User doctor = userRepository.findByRoleAndId(Role.DOCTOR, request.doctorId()).orElseThrow(
-                () -> new ResourceNotFoundException("Doctor", request.doctorId())
+    public DefineTimeSlotResponse defineTimeSlot(Integer doctorId, DefineTimeSlotRequest request) {
+        User doctor = userRepository.findByRoleAndId(Role.DOCTOR, doctorId).orElseThrow(
+                () -> new ResourceNotFoundException("Doctor", doctorId)
         );
 
         TimeSlot slotReserved = timeSlotRepository.findByDoctorIdAndStartTimeAndEndTime(
-                request.doctorId(),
+                doctorId,
                 request.startTime(),
                 request.endTime()
         ).orElse(null);

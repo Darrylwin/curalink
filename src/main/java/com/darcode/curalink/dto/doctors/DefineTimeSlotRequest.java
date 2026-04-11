@@ -6,9 +6,6 @@ import jakarta.validation.constraints.*;
 import java.time.LocalDateTime;
 
 public record DefineTimeSlotRequest(
-        @Positive
-        Integer doctorId,
-
         @FutureOrPresent(message = "Start time must be now or in future")
         @NotNull(message = "Start time is required")
         @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", shape = JsonFormat.Shape.STRING)

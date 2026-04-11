@@ -1,6 +1,7 @@
 package com.darcode.curalink.service.impl;
 
 import com.darcode.curalink.dto.appointment.AppointmentResponse;
+import com.darcode.curalink.dto.appointment.CompleteAppointmentRequest;
 import com.darcode.curalink.dto.appointment.ScheduleAppointmentRequest;
 import com.darcode.curalink.dto.appointment.ScheduleAppointmentResponse;
 import com.darcode.curalink.enums.AppointmetStatus;
@@ -9,6 +10,7 @@ import com.darcode.curalink.exception.ConflictException;
 import com.darcode.curalink.exception.ResourceNotFoundException;
 import com.darcode.curalink.mapper.AppointmentMapper;
 import com.darcode.curalink.model.Appointment;
+import com.darcode.curalink.model.MedicalRecord;
 import com.darcode.curalink.model.TimeSlot;
 import com.darcode.curalink.model.User;
 import com.darcode.curalink.repository.AppointmentRepository;
@@ -22,7 +24,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -82,6 +83,23 @@ public class AppointmentServiceImpl implements AppointmentService {
         timeSlotRepository.save(timeSlot);
 
         appointment.setStatus(AppointmetStatus.CANCELED);
+        appointmentRepository.save(appointment);
+    }
+
+    @Override
+    public void complete(Integer appointmentId, CompleteAppointmentRequest completeRequest) {
+        Appointment appointment = appointmentRepository.findById(appointmentId).orElseThrow(
+                () -> new ResourceNotFoundException("Appointment", appointmentId)
+        );
+
+        MedicalRecord medicalRecord = new MedicalRecord();
+        medicalRecord.setDiagnosis(completeRequest.diagnosis());
+        medicalRecord.setPrescription(completeRequest.prescription());
+        medicalRecord.setNotes(completeRequest.notes());
+        medicalRecord.setAppointment(appointment);
+
+        appointment.setMedicalRecord(medicalRecord);
+
         appointmentRepository.save(appointment);
     }
 }

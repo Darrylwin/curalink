@@ -17,7 +17,7 @@ public interface DoctorService {
             Pageable pageable
     );
 
-    Page<DoctorAvailableSlotResponse> getAvailableSlots(Integer id, org.springframework.data.domain.Pageable pageable);
+    Page<DoctorAvailableSlotResponse> getAvailableSlots(Integer id, Pageable pageable);
 
-    DefineTimeSlotResponse defineTimeSlot(DefineTimeSlotRequest defineTimeSlotRequest);
+    DefineTimeSlotResponse defineTimeSlot(Integer doctorId, DefineTimeSlotRequest defineTimeSlotRequest);
 }

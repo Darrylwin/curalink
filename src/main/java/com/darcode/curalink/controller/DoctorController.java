@@ -63,9 +63,12 @@ public class DoctorController {
                 .body(ApiResponse.success(new PaginatedResponse<>(slots)));
     }
 
-    @PostMapping("/slots")
-    public ResponseEntity<ApiResponse<DefineTimeSlotResponse>> createSlot(@Valid @RequestBody DefineTimeSlotRequest timeSlotRequest) {
-        DefineTimeSlotResponse response = doctorService.defineTimeSlot(timeSlotRequest);
+    @PostMapping("/{id}/slots")
+    public ResponseEntity<ApiResponse<DefineTimeSlotResponse>> createSlot(
+            @Valid @RequestBody DefineTimeSlotRequest timeSlotRequest,
+            @PathVariable("id") Integer doctorId
+    ) {
+        DefineTimeSlotResponse response = doctorService.defineTimeSlot(doctorId, timeSlotRequest);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)

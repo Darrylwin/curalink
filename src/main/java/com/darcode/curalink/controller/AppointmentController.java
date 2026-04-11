@@ -1,11 +1,13 @@
 package com.darcode.curalink.controller;
 
 import com.darcode.curalink.dto.appointment.AppointmentResponse;
+import com.darcode.curalink.dto.appointment.CompleteAppointmentRequest;
 import com.darcode.curalink.dto.appointment.ScheduleAppointmentRequest;
 import com.darcode.curalink.dto.appointment.ScheduleAppointmentResponse;
 import com.darcode.curalink.dto.shared.ApiResponse;
 import com.darcode.curalink.dto.shared.PaginatedResponse;
 import com.darcode.curalink.service.AppointmentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -54,5 +56,17 @@ public class AppointmentController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ApiResponse.success("Appointment successfully canceled"));
+    }
+
+    @PatchMapping("/{id}/complete")
+    public ResponseEntity<ApiResponse<String>> completeAppointment(
+            @Valid @RequestBody CompleteAppointmentRequest completeAppointmentRequest,
+            @PathVariable("id") Integer appointmentId
+    ) {
+        appointmentService.complete(appointmentId ,completeAppointmentRequest);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse.success("Appointment sucessfully completed"));
     }
 }

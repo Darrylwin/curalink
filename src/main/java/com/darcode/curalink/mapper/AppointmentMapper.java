@@ -1,13 +1,11 @@
 package com.darcode.curalink.mapper;
 
 import com.darcode.curalink.dto.appointment.AppointmentResponse;
-import com.darcode.curalink.dto.appointment.ScheduleAppointmentRequest;
 import com.darcode.curalink.dto.appointment.ScheduleAppointmentResponse;
 import com.darcode.curalink.model.Appointment;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
 
 @Component
 public class AppointmentMapper {
