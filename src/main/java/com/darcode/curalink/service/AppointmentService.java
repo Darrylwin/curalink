@@ -15,4 +15,6 @@ public interface AppointmentService {
     void cancelAppointment(Integer appointmentId);
 
     public void complete(Integer appointmentId, CompleteAppointmentRequest completeRequest);
+
+    Page<AppointmentResponse> findAllAppointments(Pageable pageable);
 }
