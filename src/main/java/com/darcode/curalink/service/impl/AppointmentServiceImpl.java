@@ -103,6 +103,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         medicalRecord.setAppointment(appointment);
 
         appointment.setMedicalRecord(medicalRecord);
+        appointment.setStatus(AppointmetStatus.COMPLETED);
 
         appointmentRepository.save(appointment);
     }

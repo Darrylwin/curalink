@@ -50,7 +50,7 @@ public class AppointmentController {
                 .body(ApiResponse.success(new PaginatedResponse<>(appointments)));
     }
 
-    @PatchMapping("/{id}/cancel")
+    @PutMapping("/{id}/cancel")
     public ResponseEntity<ApiResponse<String>> cancelAppointment(@PathVariable Integer id) {
         appointmentService.cancelAppointment(id);
 
@@ -59,7 +59,7 @@ public class AppointmentController {
                 .body(ApiResponse.success("Appointment successfully canceled"));
     }
 
-    @PatchMapping("/{id}/complete")
+    @PutMapping("/{id}/complete")
     public ResponseEntity<ApiResponse<String>> completeAppointment(
             @Valid @RequestBody CompleteAppointmentRequest completeAppointmentRequest,
             @PathVariable("id") Integer appointmentId
