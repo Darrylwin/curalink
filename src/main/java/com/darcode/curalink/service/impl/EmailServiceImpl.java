@@ -19,11 +19,11 @@ public class EmailServiceImpl implements EmailService {
     private String fromAdress;
 
     @Override
-    public void sendAppointmentReminderEmail(String to, String subject, String body) {
+    public void sendAppointmentReminderEmail(String to, String body) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(fromAdress);
         message.setTo(to);
-        message.setSubject(subject);
+        message.setSubject("Appointment Reminder");
         message.setText(body);
         mailSender.send(message);
         log.info("Email sent to {}", to);

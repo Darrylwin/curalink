@@ -25,6 +25,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -138,5 +139,10 @@ public class AppointmentServiceImpl implements AppointmentService {
         Page<Appointment> appointments = appointmentRepository.findAll(pageable);
 
         return appointments.map(appointmentMapper::toAppointmentResponse);
+    }
+
+    @Override
+    public List<Appointment> findAllAppointmentsBetween(LocalDateTime start, LocalDateTime end) {
+        return appointmentRepository.findByTimeSlot_StartTimeBetween(start, end);
     }
 }

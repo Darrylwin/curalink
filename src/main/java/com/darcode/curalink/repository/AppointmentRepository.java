@@ -7,6 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 public interface AppointmentRepository extends JpaRepository<Appointment, Integer> {
 
     @Query("SELECT a FROM Appointment a WHERE a.doctor.email = :userEmail OR a.patient.email = :userEmail")
@@ -14,4 +17,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             @Param("userEmail") String userEmail,
             Pageable pageable
     );
+
+    List<Appointment> findByTimeSlot_StartTimeBetween(LocalDateTime start, LocalDateTime end);
 }
