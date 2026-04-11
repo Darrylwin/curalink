@@ -4,6 +4,7 @@ import com.darcode.curalink.dto.appointment.AppointmentResponse;
 import com.darcode.curalink.dto.appointment.ScheduleAppointmentRequest;
 import com.darcode.curalink.dto.appointment.ScheduleAppointmentResponse;
 import com.darcode.curalink.dto.shared.ApiResponse;
+import com.darcode.curalink.dto.shared.PaginatedResponse;
 import com.darcode.curalink.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -32,7 +33,7 @@ public class AppointmentController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<ApiResponse<Page<AppointmentResponse>>> getUserAppointments(
+    public ResponseEntity<ApiResponse<PaginatedResponse<AppointmentResponse>>> getUserAppointments(
             @PageableDefault Pageable pageable
     ) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -43,7 +44,7 @@ public class AppointmentController {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(ApiResponse.success(appointments,"Appointments successfully retrieved"));
+                .body(ApiResponse.success(new PaginatedResponse<>(appointments)));
     }
 
     @PatchMapping("/{id}/cancel")

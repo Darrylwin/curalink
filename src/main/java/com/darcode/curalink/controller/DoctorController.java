@@ -5,6 +5,7 @@ import com.darcode.curalink.dto.doctors.DefineTimeSlotResponse;
 import com.darcode.curalink.dto.doctors.DoctorAvailableSlotResponse;
 import com.darcode.curalink.dto.doctors.DoctorResponse;
 import com.darcode.curalink.dto.shared.ApiResponse;
+import com.darcode.curalink.dto.shared.PaginatedResponse;
 import com.darcode.curalink.service.DoctorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,10 +27,10 @@ public class DoctorController {
     private final DoctorService doctorService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<Page<DoctorResponse>>> getAllDoctors(
+    public ResponseEntity<ApiResponse<PaginatedResponse<DoctorResponse>>> getAllDoctors(
             @RequestParam @Nullable String speciality,
             @RequestParam @Nullable Boolean disponibility,
-            @PageableDefault(size = 10, page = 10) Pageable pageable
+            @PageableDefault Pageable pageable
     ) {
         Page<DoctorResponse> doctors = doctorService.findAllBySpecialityAndDisponibility(
                 speciality,
@@ -39,7 +40,7 @@ public class DoctorController {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(ApiResponse.success(doctors));
+                .body(ApiResponse.success(new PaginatedResponse<>(doctors)));
     }
 
     @GetMapping("/{id}")
@@ -52,14 +53,14 @@ public class DoctorController {
     }
 
     @GetMapping("/{id}/available-slots")
-    public ResponseEntity<ApiResponse<Page<DoctorAvailableSlotResponse>>> getDoctorAvailableSlots(
+    public ResponseEntity<ApiResponse<PaginatedResponse<DoctorAvailableSlotResponse>>> getDoctorAvailableSlots(
             @PathVariable Integer id, @PageableDefault Pageable pageable
     ) {
         Page<DoctorAvailableSlotResponse> slots = doctorService.getAvailableSlots(id, pageable);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(ApiResponse.success(slots));
+                .body(ApiResponse.success(new PaginatedResponse<>(slots)));
     }
 
     @PostMapping("/slots")
