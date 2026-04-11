@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface AppointmentService {
+
     ScheduleAppointmentResponse schedule(ScheduleAppointmentRequest scheduleAppointmentRequest);
 
     Page<AppointmentResponse> findUserAppointments(String userEmail, Pageable pageable);

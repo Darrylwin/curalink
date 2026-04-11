@@ -66,7 +66,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public Page<AppointmentResponse> findUserAppointments(String userEmail, Pageable pageable) {
-        Page<Appointment> appointments = appointmentRepository.findAllByPatientEmailOrDoctorEmail(userEmail, userEmail, pageable);
+        Page<Appointment> appointments = appointmentRepository.findAllByUserAsDoctorOrPatient(userEmail, pageable);
 
         return appointments.map(appointmentMapper::toAppointmentResponse);
     }
