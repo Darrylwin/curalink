@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 public interface TimeSlotRepository extends JpaRepository<TimeSlot, Integer> {
@@ -17,4 +18,6 @@ public interface TimeSlotRepository extends JpaRepository<TimeSlot, Integer> {
     Optional<TimeSlot> findByIdAndDoctorId(Integer id, Integer doctorId);
 
     TimeSlot findByAppointmentId(Integer appointmentId);
+
+    List<TimeSlot> findByIsAvailable(Boolean isAvailable);
 }
