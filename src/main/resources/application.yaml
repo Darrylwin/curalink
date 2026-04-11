@@ -21,6 +21,19 @@ spring:
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml
 
+  # Email configuration
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: logossoudarryl20@gmail.com
+    password: vkqu xrjd gwvi ebqt
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enabled: true
+
 # Jwt configuration
 jwt:
   secret:
