@@ -1,13 +1,12 @@
 package com.darcode.curalink.dto.appointment;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
 
 public record CompleteAppointmentRequest(
-        @NotBlank
+        @NotBlank(message = "The diagnosis is required")
         String diagnosis,
 
-        @NotBlank
+        @NotBlank(message = "A prescription is required")
         String prescription,
 
         String notes

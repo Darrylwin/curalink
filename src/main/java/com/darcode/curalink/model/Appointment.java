@@ -38,6 +38,6 @@ public class Appointment {
     @JoinColumn(name = "time_slot_id")
     private TimeSlot timeSlot;
 
-    @OneToOne(mappedBy = "appointment")
+    @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL)
     private MedicalRecord medicalRecord;
 }

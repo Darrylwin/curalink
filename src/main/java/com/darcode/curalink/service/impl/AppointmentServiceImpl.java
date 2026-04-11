@@ -105,13 +105,17 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
+    @Transactional
     public void complete(Integer appointmentId, CompleteAppointmentRequest completeRequest) {
         Appointment appointment = appointmentRepository.findById(appointmentId).orElseThrow(
                 () -> new ResourceNotFoundException("Appointment", appointmentId)
         );
 
+        log.debug("Completing appointment {}", appointment.getId());
+
         if (appointment.getStatus() != AppointmetStatus.CONFIRMED) {
-            throw new ConflictException("Only cofirmed appointments can be completed");
+            log.info("This appointement is not Confirmed. Only confirmed appointments can be completed");
+            throw new ConflictException("Only confirmed appointments can be completed");
         }
 
         MedicalRecord medicalRecord = new MedicalRecord();
@@ -123,6 +127,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointment.setMedicalRecord(medicalRecord);
         appointment.setStatus(AppointmetStatus.COMPLETED);
 
+        log.debug("Appointement to complete: {}", appointment);
         appointmentRepository.save(appointment);
 
         log.info("Appointment {} completed successfully", appointmentId);
