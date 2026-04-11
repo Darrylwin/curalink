@@ -14,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,5 +37,17 @@ public class MedicalRecordController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ApiResponse.success(new PaginatedResponse<>(medicalRecords)));
+    }
+
+    @GetMapping("/patient/{id}")
+    @PreAuthorize("hasRole('DOCTOR')")
+    public ResponseEntity<ApiResponse<PaginatedResponse<MedicalRecordResponse>>> getPatientMedicalRecords(
+            @PathVariable("id") Integer patientId,
+            @PageableDefault Pageable pageable
+    ) {
+        Page<MedicalRecordResponse> records = medicalRecordService.findAllByPatient(patientId, pageable);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiResponse.success(new PaginatedResponse<>(records)));
     }
 }

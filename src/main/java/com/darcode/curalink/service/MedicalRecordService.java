@@ -6,4 +6,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface MedicalRecordService {
     Page<MedicalRecordResponse> findUserRecords(String userEmail, Pageable pageable);
+
+    public Page<MedicalRecordResponse> findAllByPatient(Integer patientId, Pageable pageable);
 }

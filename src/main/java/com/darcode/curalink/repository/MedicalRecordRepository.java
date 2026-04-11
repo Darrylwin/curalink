@@ -9,9 +9,12 @@ import org.springframework.data.repository.query.Param;
 
 public interface MedicalRecordRepository extends JpaRepository<MedicalRecord, Integer> {
 
-    @Query("SELECT mr FROM MedicalRecord mr WHERE mr.appointment.patient.id = :patientEmail")
+    @Query("SELECT mr FROM MedicalRecord mr WHERE mr.appointment.patient.email = :patientEmail")
     Page<MedicalRecord> findAllByPatientEmail(
             @Param("patientEmail") String patientEmail,
             Pageable pageable
     );
+
+    @Query("SELECT mr FROM MedicalRecord mr WHERE mr.appointment.patient.id = :patientId")
+    Page<MedicalRecord> findAllByPatientId(@Param("patientId") Integer patientId, Pageable pageable);
 }
