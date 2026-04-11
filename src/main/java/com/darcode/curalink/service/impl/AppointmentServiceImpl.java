@@ -1,5 +1,6 @@
 package com.darcode.curalink.service.impl;
 
+import com.darcode.curalink.dto.appointment.AppointmentResponse;
 import com.darcode.curalink.dto.appointment.ScheduleAppointmentRequest;
 import com.darcode.curalink.dto.appointment.ScheduleAppointmentResponse;
 import com.darcode.curalink.enums.AppointmetStatus;
@@ -15,6 +16,8 @@ import com.darcode.curalink.repository.TimeSlotRepository;
 import com.darcode.curalink.repository.UserRepository;
 import com.darcode.curalink.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -56,5 +59,12 @@ public class AppointmentServiceImpl implements AppointmentService {
         } else {
             throw new ConflictException("This time slot is already taken");
         }
+    }
+
+    @Override
+    public Page<AppointmentResponse> getUserAppointment(String userEmail, Pageable pageable) {
+        Page<Appointment> appointments = appointmentRepository.findAllByPatientEmailOrDoctorEmail(userEmail, userEmail, pageable);
+
+        return appointments.map(appointmentMapper::toAppointmentResponse);
     }
 }
