@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/doctors")
-@PreAuthorize("hasRole('ADMIN')")
 @RequiredArgsConstructor
 public class DoctorController {
 
@@ -63,6 +62,7 @@ public class DoctorController {
                 .body(ApiResponse.success(new PaginatedResponse<>(slots)));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/{id}/slots")
     public ResponseEntity<ApiResponse<DefineTimeSlotResponse>> createSlot(
             @Valid @RequestBody DefineTimeSlotRequest timeSlotRequest,

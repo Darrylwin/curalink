@@ -26,6 +26,7 @@ public class AppointmentController {
 
     private final AppointmentService appointmentService;
 
+    @PreAuthorize("hasRole('PATIENT')")
     @PostMapping
     public ResponseEntity<ApiResponse<ScheduleAppointmentResponse>> scheduleAnAppointment(
             @Valid @RequestBody ScheduleAppointmentRequest scheduleRequest
@@ -37,6 +38,7 @@ public class AppointmentController {
                 .body(ApiResponse.success(response, "Appointment successfully scheduled"));
     }
 
+    @PreAuthorize("hasAnyRole('PATIENT','DOCTOR')")
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<PaginatedResponse<AppointmentResponse>>> getUserAppointments(
             @PageableDefault Pageable pageable
@@ -52,6 +54,7 @@ public class AppointmentController {
                 .body(ApiResponse.success(new PaginatedResponse<>(appointments)));
     }
 
+    @PreAuthorize("hasAnyRole('PATIENT','DOCTOR')")
     @PutMapping("/{id}/cancel")
     public ResponseEntity<ApiResponse<String>> cancelAppointment(@PathVariable Integer id) {
         appointmentService.cancelAppointment(id);
@@ -61,6 +64,7 @@ public class AppointmentController {
                 .body(ApiResponse.success("Appointment successfully canceled"));
     }
 
+    @PreAuthorize("hasRole('DOCTOR')")
     @PutMapping("/{id}/complete")
     public ResponseEntity<ApiResponse<String>> completeAppointment(
             @Valid @RequestBody CompleteAppointmentRequest completeAppointmentRequest,
