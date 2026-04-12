@@ -26,19 +26,28 @@ public class AppointmentReminderScheduler {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime in24Hours = now.plusHours(24);
 
-        // find all appointments that will start in 24 h
-        List<Appointment> appointmentsIn24Hours = appointmentService.findAllAppointmentsBetween(now, in24Hours);
+        try {
+            // find all appointments that will start in 24 h
+            List<Appointment> appointmentsIn24Hours = appointmentService.findAllAppointmentsBetween(now, in24Hours);
+            log.debug("Appointments starting in 24 hours: {}", appointmentsIn24Hours.size());
 
-        for (Appointment appointment : appointmentsIn24Hours) {
-            emailService.sendAppointmentReminderEmail(
-                    appointment.getPatient().getEmail(),
-                    buildReminderHtml(appointment)
-            );
-            log.info("Reminder email sent for appointment {}", appointment.getId());
+            for (Appointment appointment : appointmentsIn24Hours) {
+                try {
+                    String patientEmail = appointment.getPatient().getEmail();
+                    String reminderHtml = buildReminderHtml(appointment);
 
+                    log.debug("Sending email to: {}", patientEmail);
+                    emailService.sendAppointmentReminderEmail(patientEmail, reminderHtml);
+                    log.info("Reminder email sent for appointment {}", appointment.getId());
+                } catch (Exception e) {
+                    log.error("Error sending email for appointment {}", appointment.getId(), e);
+                }
+            }
+
+            log.info("Appointment Reminder email sending completed");
+        } catch (Exception e) {
+            log.error("Error in appointment reminder scheduler", e);
         }
-
-        log.info("Appointment Reminder email sending completed");
     }
 
     // -------------- Utility methods ------------------
