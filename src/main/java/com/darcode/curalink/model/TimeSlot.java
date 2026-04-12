@@ -1,5 +1,6 @@
 package com.darcode.curalink.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,8 +29,10 @@ public class TimeSlot {
 
     @ManyToOne
     @JoinColumn(name = "doctor_id")
+    @JsonBackReference
     private User doctor;
 
     @OneToOne(mappedBy = "timeSlot")
+    @JsonBackReference
     private Appointment appointment;
 }

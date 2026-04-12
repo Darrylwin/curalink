@@ -1,6 +1,7 @@
 package com.darcode.curalink.model;
 
 import com.darcode.curalink.enums.Role;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,12 +37,15 @@ public class User {
     private DoctorProfile doctorProfile;
 
     @OneToMany(mappedBy = "doctor")
+    @JsonBackReference
     private List<TimeSlot> timeSlots;
 
     @OneToMany(mappedBy = "doctor")
+    @JsonBackReference
     private List<Appointment> doctorAppointments = new ArrayList<>();
 
     @OneToMany(mappedBy = "patient")
+    @JsonBackReference
     private List<Appointment> patientAppointment = new ArrayList<>();
 }
 

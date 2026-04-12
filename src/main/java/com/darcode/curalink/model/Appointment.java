@@ -1,6 +1,8 @@
 package com.darcode.curalink.model;
 
 import com.darcode.curalink.enums.AppointmetStatus;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,8 +38,10 @@ public class Appointment {
 
     @OneToOne
     @JoinColumn(name = "time_slot_id")
+    @JsonManagedReference
     private TimeSlot timeSlot;
 
     @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL)
+    @JsonBackReference
     private MedicalRecord medicalRecord;
 }

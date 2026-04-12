@@ -21,7 +21,7 @@ spring:
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml
 
-  # Email configuration
+    # Email configuration
   mail:
     host: smtp.gmail.com
     port: 587
@@ -33,6 +33,10 @@ spring:
           auth: true
           starttls:
             enabled: true
+            required: true
+          connectionTimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
 
 # Jwt configuration
 jwt:

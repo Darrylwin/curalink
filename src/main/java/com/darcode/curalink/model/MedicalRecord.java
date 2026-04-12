@@ -1,5 +1,6 @@
 package com.darcode.curalink.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,5 +26,6 @@ public class MedicalRecord {
 
     @OneToOne
     @JoinColumn(name = "appointment_id")
+    @JsonBackReference
     private Appointment appointment;
 }
