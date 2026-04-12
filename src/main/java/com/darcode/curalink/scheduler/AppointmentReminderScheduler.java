@@ -42,7 +42,6 @@ public class AppointmentReminderScheduler {
 
                 emailService.sendAppointmentReminderEmail(
                         appointment.getPatient().getEmail(),
-                        "emails/appointment-reminder",
                         variables
                 );
             }

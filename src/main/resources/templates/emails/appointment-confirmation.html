@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background-color: #2d6a4f;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .content {
+            padding: 20px 0;
+        }
+
+        .badge {
+            background-color: #f0f4f8;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .success-badge {
+            background-color: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .footer {
+            font-size: 12px;
+            color: #666;
+            margin-top: 30px;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Confirmation de rendez-vous</h1>
+    </div>
+    <div class="content">
+        <p>Bonjour <strong th:text="${patientName}">Patient</strong>,</p>
+        <p>Votre rendez-vous a été confirmé avec succès.</p>
+        <div class="success-badge">
+            <p style="color: #28a745; margin: 0;"><strong>✓ Rendez-vous confirmé</strong></p>
+        </div>
+        <div class="badge">
+            <p><strong>Médecin :</strong> <span th:text="${doctorName}">Dr. Smith</span></p>
+            <p><strong>Spécialité :</strong> <span th:text="${doctorSpeciality}">Cardiologie</span></p>
+            <p><strong>Date :</strong> <span th:text="${appointmentDate}">01/01/2026</span></p>
+            <p><strong>Heure :</strong> <span th:text="${appointmentTime}">09:00</span></p>
+            <p><strong>Raison :</strong> <span th:text="${appointmentReason}">Consultation générale</span></p>
+        </div>
+        <p>Merci de votre confiance. N'oubliez pas de vous présenter 10 minutes avant votre rendez-vous.</p>
+    </div>
+    <div class="footer">
+        <p>Curalink - Plateforme de gestion des rendez-vous médicaux</p>
+    </div>
+</div>
+</body>
+</html>
+

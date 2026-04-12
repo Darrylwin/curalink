@@ -27,8 +27,28 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void sendAppointmentReminderEmail(
-            String to, String templateName, Map<String, Object> variables
+            String to, Map<String, Object> variables
     ) {
+        sendEmail(
+                to,
+                "emails/appointment-reminder",
+                variables,
+                "Appointment Reminder"
+        );
+    }
+
+    @Override
+    public void sendAppointmentConfirmationEmail(String to, Map<String, Object> variables) {
+        sendEmail(
+                to,
+                "emails/appointment-confirmation",
+                variables,
+                "Appointment Confirmation"
+        );
+    }
+
+    // ----------- Helper methods ---------------
+    private void sendEmail(String to, String templateName, Map<String, Object> variables, String subject) {
         try {
             Context context = new Context();
             context.setVariables(variables);
@@ -39,7 +59,7 @@ public class EmailServiceImpl implements EmailService {
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
             helper.setFrom(fromAdress);
             helper.setTo(to);
-            helper.setSubject("Appoinment Reminder");
+            helper.setSubject(subject);
             helper.setText(htmlContent, true);
 
             log.debug("Sending email to: {}", to);
