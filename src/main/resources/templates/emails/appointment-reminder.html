@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background-color: #2d6a4f;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .content {
+            padding: 20px 0;
+        }
+
+        .badge {
+            background-color: #f0f4f8;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Rappel de rendez-vous</h1>
+    </div>
+    <div class="content">
+        <p>Bonjour <strong th:text="${patientName}">Patient</strong>,</p>
+        <p>Nous vous rappelons votre rendez-vous prévu pour demain.</p>
+        <div class="badge">
+            <p><strong>Médecin :</strong> <span th:text="${doctorName}">Dr. Smith</span></p>
+            <p><strong>Date :</strong> <span th:text="${appointmentDate}">01/01/2026</span></p>
+            <p><strong>Heure :</strong> <span th:text="${appointmentTime}">09:00</span></p>
+        </div>
+        <p th:if="${hasNotes}">
+            <strong>Notes :</strong> <span th:text="${notes}"></span>
+        </p>
+    </div>
+</div>
+</body>
+</html>
