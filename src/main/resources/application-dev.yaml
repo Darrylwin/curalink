@@ -11,7 +11,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     show-sql: true
     open-in-view: false
     properties:
@@ -21,9 +21,11 @@ spring:
 #      jakarta.persistence.schema-generation.scripts.action: create
 #      jakarta.persistence.schema-generation.scripts.create-target: src/main/resources/db/changelog/changes/V1__init_schema.sql # This is for the V1 of the app
 
-  # Desable Liquibase in dev
+  # Liquibase configuration - manages schema creation
   liquibase:
     enabled: false
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    contexts: dev
 
   # Email configuration
   mail:

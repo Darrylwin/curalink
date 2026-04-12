@@ -20,6 +20,7 @@ spring:
 
   # Database versioning configuration
   liquibase:
+    enabled: true
     change-log: classpath:db/changelog/db.changelog-master.yaml
 
     # Email configuration
