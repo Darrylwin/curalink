@@ -9,7 +9,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Component
@@ -32,34 +34,22 @@ public class AppointmentReminderScheduler {
             log.debug("Appointments starting in 24 hours: {}", appointmentsIn24Hours.size());
 
             for (Appointment appointment : appointmentsIn24Hours) {
-                try {
-                    String patientEmail = appointment.getPatient().getEmail();
-                    String reminderHtml = buildReminderHtml(appointment);
+                Map<String, Object> variables = new HashMap<>();
+                variables.put("patientName", appointment.getPatient().getFirstName());
+                variables.put("doctorName", appointment.getDoctor().getFirstName());
+                variables.put("appointmentDate", appointment.getTimeSlot().getStartTime().toLocalDate());
+                variables.put("appointmentTime", appointment.getTimeSlot().getStartTime().toLocalTime());
 
-                    log.debug("Sending email to: {}", patientEmail);
-                    emailService.sendAppointmentReminderEmail(patientEmail, reminderHtml);
-                    log.info("Reminder email sent for appointment {}", appointment.getId());
-                } catch (Exception e) {
-                    log.error("Error sending email for appointment {}", appointment.getId(), e);
-                }
+                emailService.sendAppointmentReminderEmail(
+                        appointment.getPatient().getEmail(),
+                        "emails/appointment-reminder",
+                        variables
+                );
             }
 
             log.info("Appointment Reminder email sending completed");
         } catch (Exception e) {
             log.error("Error in appointment reminder scheduler", e);
         }
-    }
-
-    // -------------- Utility methods ------------------
-    private String buildReminderHtml(Appointment appointment) {
-        return """
-                        <h2>Rappel de rendez-vous</h2>
-                        <p>Bonjour %s,</p>
-                        <p>Vous avez un rendez-vous demain avec le Dr. %s à %s.</p>
-                """.formatted(
-                appointment.getPatient().getFirstName(),
-                appointment.getDoctor().getFirstName(),
-                appointment.getTimeSlot().getStartTime()
-        );
     }
 }
