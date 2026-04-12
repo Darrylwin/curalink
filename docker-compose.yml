@@ -1,0 +1,39 @@
+services:
+
+  app:
+    build: .
+    container_name: curalink-api
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - curalink-network
+    env_file:
+      - .env
+
+  db:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: curalink
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SCHELL", "pg_isready -U ${DB_USERNAME} -d curalink"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - curalink-network
+
+volumes:
+  postgres_data:
+
+networks:
+  curalink-network:
+    driver: bridge
