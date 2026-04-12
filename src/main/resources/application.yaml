@@ -4,15 +4,16 @@ spring:
 
   # Database setup
   datasource:
-    url: jdbc:postgresql://localhost:5432/curalink
-    username: postgres
-    password: postgres
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:curalink}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
       ddl-auto: validate
-    show-sql: true
+    show-sql: false
+    open-in-view: false
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -23,10 +24,10 @@ spring:
 
     # Email configuration
   mail:
-    host: smtp.gmail.com
-    port: 587
-    username: logossoudarryl20@gmail.com
-    password: vkqu xrjd gwvi ebqt
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
     properties:
       mail:
         smtp:
@@ -41,11 +42,11 @@ spring:
 # Jwt configuration
 jwt:
   secret:
-    key: uWBtEyg+ABhPvngAqVHv+NUt8V8h2YW1sj8buY39lBY=
+    key: ${JWT_SECRET_KEY}
 
 # Cors configuration
 cors:
-  allowed-origins: http://localhost:3000,http://localhost:3005
+  allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000}
 
 # Swagger configuration
 springdoc:
