@@ -17,6 +17,7 @@ import com.darcode.curalink.repository.AppointmentRepository;
 import com.darcode.curalink.repository.TimeSlotRepository;
 import com.darcode.curalink.repository.UserRepository;
 import com.darcode.curalink.service.AppointmentService;
+import com.darcode.curalink.service.EmailService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +26,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -36,6 +39,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final UserRepository userRepository;
     private final TimeSlotRepository timeSlotRepository;
     private final AppointmentMapper appointmentMapper;
+    private final EmailService emailService;
 
     @Override
     public ScheduleAppointmentResponse schedule(ScheduleAppointmentRequest scheduleAppointmentRequest) {
@@ -61,13 +65,24 @@ public class AppointmentServiceImpl implements AppointmentService {
             appointment.setReason(scheduleAppointmentRequest.reason());
             appointment.setDoctor(doctor);
             appointment.setSheduledAt(LocalDateTime.now());
-            appointment.setStatus(AppointmetStatus.PENDING);
+            appointment.setStatus(AppointmetStatus.CONFIRMED);
             appointment.setPatient(patient);
             appointment.setTimeSlot(timeSlot);
 
-            return appointmentMapper.toScheduleAppointmentResponse(
-                    appointmentRepository.save(appointment)
+            Map<String, Object> variables = new HashMap<>();
+            variables.put("patientName", appointment.getPatient().getFirstName());
+            variables.put("doctorName", appointment.getDoctor().getFirstName());
+            variables.put("appointmentDate", appointment.getTimeSlot().getStartTime().toLocalDate());
+            variables.put("appointmentReason", appointment.getReason());
+            variables.put("consultationFee", appointment.getDoctor().getDoctorProfile().getConsultationFee());
+
+            Appointment savedAppointment = appointmentRepository.save(appointment);
+            emailService.sendAppointmentConfirmationEmail(
+                    appointment.getPatient().getEmail(),
+                    variables
             );
+
+            return appointmentMapper.toScheduleAppointmentResponse(savedAppointment);
         } else {
             throw new ConflictException("This time slot is already taken");
         }
