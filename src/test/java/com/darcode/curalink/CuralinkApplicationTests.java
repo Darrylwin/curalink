@@ -41,7 +41,7 @@ public abstract class CuralinkApplicationTests {
         registry.add("MAIL_USERNAME", () -> "test@test.com");
         registry.add("MAIL_PASSWORD", () -> "test");
         registry.add("CORS_ALLOWED_ORIGINS", () -> "http://localhost:3000");
-        registry.add("JWT_SECRET_KEY", () -> "dGVzdC1zZWNyZXQta2V5LXBvdXItbGVzLXRlc3RzLXVuaXRhaXJlcy0yMDI2");
+        registry.add("jwt.secret.key", () -> "dGVzdC1zZWNyZXQta2V5LXBvdXItbGVzLXRlc3RzLTEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MA==");
     }
 
     protected WebTestClient webTestClient;
