@@ -44,7 +44,8 @@ class AuthControllerTest extends CuralinkApplicationTests {
                 .exchange()
                 .expectStatus().isCreated()
                 .expectBody()
-                .jsonPath("$.token").isNotEmpty();
+                .jsonPath("$.success").isEqualTo(true)
+                .jsonPath("$.data").isNotEmpty();
 
         assertThat(userRepository.findByEmail("just@motion.com")).isPresent();
     }
@@ -52,6 +53,7 @@ class AuthControllerTest extends CuralinkApplicationTests {
     @Test
     void should_return_409_when_email_already_exists() {
         User existing = new User();
+        existing.setFirstName("Just Motion");
         existing.setEmail("just@motion.com");
         existing.setPassword(passwordEncoder.encode("Kirin"));
         existing.setRole(Role.PATIENT);
@@ -75,6 +77,7 @@ class AuthControllerTest extends CuralinkApplicationTests {
     @Test
     void should_login_successfully() {
         User user = new User();
+        user.setFirstName("Just Motion");
         user.setEmail("just@motion.com");
         user.setPassword(passwordEncoder.encode("Kirin"));
         user.setRole(Role.PATIENT);
@@ -90,7 +93,9 @@ class AuthControllerTest extends CuralinkApplicationTests {
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
-                .jsonPath("$.token").isNotEmpty();
+                .jsonPath("$.success").isEqualTo(true)
+                .jsonPath("$.data.accessToken").isNotEmpty()
+                .jsonPath("$.data.firstName").isEqualTo("Just Motion");
     }
 
     @Test

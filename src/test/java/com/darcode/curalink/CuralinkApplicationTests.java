@@ -1,7 +1,6 @@
 package com.darcode.curalink;
 
 import com.darcode.curalink.dto.auth.LoginRequestDto;
-import com.darcode.curalink.dto.auth.LoginResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -14,7 +13,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -65,17 +64,19 @@ public abstract class CuralinkApplicationTests {
     protected String loginAndGetToken(String email, String password) {
         LoginRequestDto request = new LoginRequestDto(email, password);
 
-        return Objects.requireNonNull(webTestClient
-                        .post()
-                        .uri(baseUrl() + "/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .bodyValue(request)
-                        .exchange()
-                        .expectStatus().isOk()
-                        .expectBody(LoginResponseDto.class)
-                        .returnResult()
-                        .getResponseBody())
-                .accessToken();
+        AtomicReference<String> token = new AtomicReference<>();
+
+        webTestClient
+                .post()
+                .uri(baseUrl() + "/auth/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(request)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.data.accessToken").value(token::set);
+
+        return token.get();
     }
 
     protected WebTestClient.RequestHeadersSpec<?> authenticatedGet(String url, String token) {
