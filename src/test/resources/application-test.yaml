@@ -1,0 +1,15 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
+  liquibase:
+    enabled: true
+
+jwt:
+  secret:
+    key: dGVzdC1zZWNyZXQta2V5LXBvdXItbGVzLXRlc3RzLXVuaXRhaXJlcy0yMDI2
+
+cors:
+  allowed-origins: http://localhost:3005
