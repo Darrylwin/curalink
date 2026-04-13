@@ -2,7 +2,7 @@ package com.darcode.curalink;
 
 import com.darcode.curalink.dto.auth.LoginRequestDto;
 import com.darcode.curalink.dto.auth.LoginResponseDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
@@ -31,22 +31,35 @@ public abstract class CuralinkApplicationTests {
     static void configureProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", postgres::getJdbcUrl);
         registry.add("spring.datasource.username", postgres::getUsername);
-        registry.add("spring.datasource.password", postgres::getPassword); // manquant
+        registry.add("spring.datasource.password", postgres::getPassword);
         registry.add("DB_HOST", postgres::getHost);
         registry.add("DB_PORT", () -> postgres.getMappedPort(5432));
         registry.add("DB_NAME", () -> "curalink_test");
         registry.add("DB_USERNAME", () -> "test");
         registry.add("DB_PASSWORD", () -> "test");
+        registry.add("MAIL_HOST", () -> "smtp.gmail.com");
+        registry.add("MAIL_PORT", () -> "587");
+        registry.add("MAIL_USERNAME", () -> "test@test.com");
+        registry.add("MAIL_PASSWORD", () -> "test");
+        registry.add("CORS_ALLOWED_ORIGINS", () -> "http://localhost:3000");
+        registry.add("JWT_SECRET_KEY", () -> "dGVzdC1zZWNyZXQta2V5LXBvdXItbGVzLXRlc3RzLXVuaXRhaXJlcy0yMDI2");
     }
 
-    @Autowired
     protected WebTestClient webTestClient;
 
     @LocalServerPort
     protected int port;
 
+    @BeforeEach
+    void initWebTestClient() {
+        this.webTestClient = WebTestClient
+                .bindToServer()
+                .baseUrl("http://localhost:" + port)
+                .build();
+    }
+
     protected String baseUrl() {
-        return "http://localhost:" + port + "/api";
+        return "/api";
     }
 
     protected String loginAndGetToken(String email, String password) {
