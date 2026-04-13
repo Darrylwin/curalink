@@ -110,7 +110,7 @@ class AuthControllerTest extends CuralinkApplicationTests {
     void should_return_400_when_email_is_invalid() {
         RegistrationRequestDto request = new RegistrationRequestDto(
                 "Just Motion",
-                "just@motion.com",
+                "pas-un-email-valide",
                 "Kirin"
         );
 

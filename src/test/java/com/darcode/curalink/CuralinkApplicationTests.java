@@ -1,7 +1,7 @@
 package com.darcode.curalink;
 
 import com.darcode.curalink.dto.auth.LoginRequestDto;
-import com.github.dockerjava.api.model.AuthResponse;
+import com.darcode.curalink.dto.auth.LoginResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -31,6 +31,7 @@ public abstract class CuralinkApplicationTests {
     static void configureProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", postgres::getJdbcUrl);
         registry.add("spring.datasource.username", postgres::getUsername);
+        registry.add("spring.datasource.password", postgres::getPassword); // manquant
         registry.add("DB_HOST", postgres::getHost);
         registry.add("DB_PORT", () -> postgres.getMappedPort(5432));
         registry.add("DB_NAME", () -> "curalink_test");
@@ -58,10 +59,10 @@ public abstract class CuralinkApplicationTests {
                         .bodyValue(request)
                         .exchange()
                         .expectStatus().isOk()
-                        .expectBody(AuthResponse.class)
+                        .expectBody(LoginResponseDto.class)
                         .returnResult()
                         .getResponseBody())
-                .getIdentityToken();
+                .accessToken();
     }
 
     protected WebTestClient.RequestHeadersSpec<?> authenticatedGet(String url, String token) {
@@ -75,6 +76,8 @@ public abstract class CuralinkApplicationTests {
         return webTestClient
                 .post()
                 .uri(url)
-                .header("Authorization", "Bearer " + token);
+                .header("Authorization", "Bearer " + token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(body);
     }
 }
